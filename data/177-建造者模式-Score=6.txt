@@ -1,0 +1,140 @@
+建造者模式是设计模式的一种，将一个复杂对象的构建与它的表示分离，使得同样的构建过程可以创建不同的表示。
+
+## 实用范围
+1 当创建复杂对象的算法应该独立于该对象的组成部分以及它们的装配方式时。
+2 当构造过程必须允许被构造的对象有不同表示时。
+
+## 角色
+建造者模式建造者模式在这样的设计模式中，有以下几个角色：
+1 builder：为创建一个产品对象的各个部件指定抽象接口。
+2 ConcreteBuilder：实现Builder的接口以构造和装配该产品的各个部件，定义并明确它所创建的表示，并提供一个检索产品的接口。
+3 Director：构造一个使用Builder接口的对象。
+4 Product：表示被构造的复杂对象。ConcreteBuilder创建该产品的内部表示并定义它的装配过程，包含定义组成部件的类，包括将这些部件装配成最终产品的接口。
+
+## 例子
+Builder
+public interface PersonBuilder {
+void buildHead();
+void buildBody();
+void buildFoot();
+Person buildPerson();
+}
+//具体建造工具
+ConcreteBuilder
+public class ManBuilder implements PersonBuilder {
+Person person;
+public ManBuilder() {
+person = new Person();
+}
+public void buildbody() {
+person.setBody("建造男人的身体");
+}
+public void buildFoot() {
+person.setFoot("建造男人的脚");
+}
+public void buildHead() {
+person.setHead("建造男人的头");
+}
+public Person buildPerson() {
+return person;
+}
+}
+//建造者
+Director
+public class PersonDirector {
+public Person constructPerson(PersonBuilder pb) {
+pb.buildHead();
+pb.buildBody();
+pb.buildFoot();
+return pb.buildPerson();
+}
+}
+Product
+public class Person {
+private String head;
+private String body;
+private String foot;
+public String getHead() {
+return head;
+}
+public void setHead(String head) {
+this.head = head;
+}
+public String getBody() {
+return body;
+}
+public void setBody(String body) {
+this.body = body;
+}
+public String getFoot() {
+returnfoot;
+}
+public void setFoot(String foot) {
+this.foot = foot;
+}
+}
+public class Man extends Person {
+}
+Test
+public class Test{
+public static void main(String[] args) {
+PersonDirector pd = new PersonDirector();
+Person person = pd.constructPerson(new ManBuilder());
+System.out.println(person.getBody());
+System.out.println(person.getFoot());
+System.out.println(person.getHead());
+}
+}
+result
+建造男人的身体
+建造男人的脚
+建造男人的头
+
+## 扩展
+建造者模式在使用过程中可以演化出多种形式：
+省略抽象建造者角色
+如果系统中只需要一个具体的建造者的话，可以省略掉抽象建造者。这是代码可能如下：
+class FoodManager
+{
+private:
+BuilderA * builder;
+public:
+FoodManager() {builder= new BuilderA();};
+void Construct()
+{
+builder->BuildRiceNoodles();
+builder->BuildDrink();
+builder->BuildCoolDish();
+}
+};
+省略指导者角色
+在具体建造者只有一个的情况下，如果抽象建造者角色已经被省略掉，那么还可以省略掉指导者角色，让Builder自己扮演指导者和建造者双重角色。这是代码可能如下：
+//builder
+class Builder
+{
+private:
+Food * food;
+public:
+Builder(){food = new Food();}
+void BuildRiceNoodles() {//..};
+void BuildCoolDish(){//..};
+void BuildDrink(){//..};
+Food * getFood(){return food;}
+void Construct()
+{
+BuildRiceNoodles();
+BuildCoolDish();
+BuildDrink();
+}
+};
+同时，客户端也需要进行相应的调整，如下：
+//client
+int_tmain(int argc, _TCHAR* argv[])
+{
+Builder * builder = new Builder();
+builder->Construct();
+Food *food = builder->getFood();
+food->show();
+return 0;
+}
+C#中的StringBuilder就是这样一个例子。

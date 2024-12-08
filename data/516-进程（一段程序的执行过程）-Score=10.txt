@@ -1,0 +1,470 @@
+进程（Process）是计算机中的程序关于某数据集合上的一次运行活动，是系统进行资源分配的基本单位，是操作系统结构的基础。在早期面向进程设计的计算机结构中，进程是程序的基本执行实体；在当代面向线程设计的计算机结构中，进程是线程的容器。程序是指令、数据及其组织形式的描述，进程是程序的实体。
+
+## 概念提出
+进程是60年代初首先由麻省理工学院的MULTICS系统和IBM公司的CTSS/360系统引入的。
+进程是一个具有独立功能的程序关于某个数据集合的一次运行活动。它可以申请和拥有系统资源，是一个动态的概念，是一个活动的实体。它不只是程序的代码，还包括当前的活动，通过程序计数器的值和处理寄存器的内容来表示。
+
+## 定义
+狭义定义：进程是正在运行的程序的实例（an instance of a computer program that is being executed）。
+广义定义：进程是一个具有一定独立功能的程序关于某个数据集合的一次运行活动。它是操作系统动态执行的基本单元，在传统的操作系统中，进程既是基本的分配单元，也是基本的执行单元。
+进程的概念主要有两点：第一，进程是一个实体。每一个进程都有它自己的地址空间，一般情况下，包括文本区域（text region）、数据区域（data region）和堆栈（stack region）。文本区域存储处理器执行的代码；数据区域存储变量和进程执行期间使用的动态分配的内存；堆栈区域存储着活动过程调用的指令和本地变量。第二，进程是一个“执行中的程序”。程序是一个没有生命的实体，只有处理器赋予程序生命时（操作系统执行之），它才能成为一个活动的实体，我们称其为进程。
+进程是操作系统中最基本、重要的概念。是多道程序系统出现后，为了刻画系统内部出现的动态情况，描述系统内部各道程序的活动规律引进的一个概念,所有多道程序设计操作系统都建立在进程的基础上。
+
+### 原因
+操作系统引入进程的概念的原因:
+从理论角度看，是对正在运行的程序过程的抽象；
+从实现角度看，是一种数据结构，目的在于清晰地刻画动态系统的内在规律，有效管理和调度进入计算机系统主存储器运行的程序。
+
+### 特征
+动态性：进程的实质是程序在多道程序系统中的一次执行过程，进程是动态产生，动态消亡的。
+并发性：任何进程都可以同其他进程一起并发执行
+独立性：进程是一个能独立运行的基本单位，同时也是系统分配资源和调度的独立单位；
+异步性：由于进程间的相互制约，使进程具有执行的间断性，即进程按各自独立的、不可预知的速度向前推进
+结构特征：进程由程序、数据和进程控制块三部分组成。
+多个不同的进程可以包含相同的程序：一个程序在不同的数据集里就构成不同的进程，能得到不同的结果；但是执行过程中，程序不能发生改变。
+
+## 内容
+一个计算机系统进程包括（或者说“拥有”）下列数据：
+该程序的可运行机器码在存储器中的映像。 分配给该进程的存储器（通常包括虚拟内存的一个区域）。存储器的内容包括可运行代码、特定于进程的数据（输入、输出）、调用堆栈、堆栈（用于保存运行时运数中途产生的数据）。 分配给该进程的资源的操作系统描述符，诸如文件描述符（Unix术语）或文件句柄（Windows）、数据源和数据终端。 安全特性，诸如进程拥有者和进程的权限集（可以容许的操作）。 处理器状态（内文），诸如寄存器内容、物理存储器寻址等。当进程正在运行时，状态通常储存在寄存器，其他情况在存储器。
+
+### 切换
+Windows 和Windows Vista 体系结构Windows 和Windows Vista 体系结构进行进程切换就是从正在运行的进程中收回处理器，然后再使待运行进程来占用处理器。
+这里所说的从某个进程收回处理器，实质上就是把进程存放在处理器的寄存器中的中间数据找个地方存起来，从而把处理器的寄存器腾出来让其他进程使用。那么被中止运行进程的中间数据存在何处好呢？当然这个地方应该是进程的私有堆栈。
+让进程来占用处理器，实质上是把某个进程存放在私有堆栈中寄存器的数据（前一次本进程被中止时的中间数据）再恢复到处理器的寄存器中去，并把待运行进程的断点送入处理器的程序指针PC，于是待运行进程就开始被处理器运行了，也就是这个进程已经占有处理器的使用权了。
+这就像多个同学要分时使用同一张课桌一样，所谓要收回正在使用课桌同学的课桌使用权，实质上就是让他把属于他的东西拿走；而赋予某个同学课桌使用权，只不过就是让他把他的东西放到课桌上罢了。
+在切换时，一个进程存储在处理器各寄存器中的中间数据叫做进程的上下文，所以进程的 切换实质上就是被中止运行进程与待运行进程上下文的切换。在进程未占用处理器时，进程 的上下文是存储在进程的私有堆栈中的。
+
+### 状态
+进程的三个基本状态进程的三个基本状态进程执行时的间断性，决定了进程可能具有多种状态。事实上，运行中的进程可能具有以下三种基本状态。
+1）就绪状态（Ready）：
+进程已获得除处理器外的所需资源，等待分配处理器资源；只要分配了处理器进程就可执行。就绪进程可以按多个优先级来划分队列。例如，当一个进程由于时间片用完而进入就绪状态时，排入低优先级队列；当进程由I/O操作完成而进入就绪状态时，排入高优先级队列。
+2）运行状态(Running)：
+进程占用处理器资源；处于此状态的进程的数目小于等于处理器的数目。在没有其他进程可以执行时(如所有进程都在阻塞状态)，通常会自动执行系统的空闲进程。
+3）阻塞状态(Blocked)：
+由于进程等待某种条件（如I/O操作或进程同步），在条件满足之前无法继续执行。该事件发生前即使把处理器资源分配给该进程，也无法运行。
+
+### 区别
+程序
+程序是指令和数据的有序集合，其本身没有任何运行的含义，是一个静态的概念。而进程是程序在处理机上的一次执行过程，它是一个动态的概念。
+程序可以作为一种软件资料长期存在，而进程是有一定生命期的。程序是永久的，进程是暂时的。
+进程更能真实地描述并发，而程序不能；
+进程是由进程控制块、程序段、数据段三部分组成;
+进程具有创建其他进程的功能，而程序没有。
+同一程序同时运行于若干个数据集合上，它将属于若干个不同的进程，也就是说同一程序可以对应多个进程。
+在传统的操作系统中，程序并不能独立运行，作为资源分配和独立运行的基本单元都是进程。
+线程
+进程和线程关系进程和线程关系通常在一个进程中可以包含若干个线程，它们可以利用进程所拥有的资源，在引入线程的操作系统中，通常都是把进程作为分配资源的基本单位，而把线程作为独立运行和独立调度的基本单位，由于线程比进程更小，基本上不拥有系统资源，故对它的调度所付出的开销就会小得多，能更高效的提高系统内多个程序间并发执行的程度。
+管程
+系统中的各种硬件资源和软件资源,均可用数据结构抽象地描述其资源特性,即用少量信息和对资源所执行的操作来表征该资源,而忽略了它们的内部结构和实现细节。
+利用共享数据结构抽象地表示系统中的共享资源,而把对该共享数据结构实施的操作定义为一组过程。
+代表共享资源的数据结构,以及由对该共享数据结构实施操作的一组过程所组成的资源管理程序,共同构成了一个操作系统的资源管理模块,我们称之为管程。
+一个管程定义了一个数据结构和能为并发进程所执行(在该数据结构上)的一组操作,这组操作能同步进程和改变管程中的数据局部于管程的数据结构,只能被局部于管程的过程所访问,任何管程之外的过程都不能访问它;反之,局部于管程的过程也只能访问管程内的数据结构。由此可见,管程相当于围墙,它把共享变量和对它进行操作的若干个过程围了起来,所有进程要访问临界资源时,都必须经过管程才能进入,而管程每次只允许一个进程进入管程,从而实现了进程的互斥。
+当下推出的通用操作系统都引入了线程，以便进一步提高系统的并发性，并把它视为现代操作系统的一个重要指标。
+
+### 控制
+进程控制是进程管理中最基本的功能。它用于创建一个新进程，终止一个已完成的进程，或者去终止一个因出现某事件而使其无法运行下去的进程，还可负责进程运行中的状态转换。
+创建进程
+1.引起创建进程的事件
+在多道程序环境中，只有（作为）进程（时）才能在系统中运行。因此，为使程序能运行，就必须为它创建进程。导致一个进程去创建另一个进程的典型事件，可以有以下四类：
+1）用户登录
+在分时系统中，用户在终端键入登录命令后，如果是合法用户，系统将为该终端建立一个进程，并把它插入到就绪队列中。
+2）作业调度
+在批处理系统中，当作业调度程序按照一定的算法调度到某作业时，便将该作业装入到内存，为它分配必要的资源，并立即为它创建进程，再插入到就绪队列中。
+3） 提供服务
+当运行中的用户程序提出某种请求后，系统将专门创建一个进程来提供用户所需要的服务，例如，用户程序要求进行文件打印，操作系统将为它创建一个打印进程，这样，不仅可以使打印进程与该用户进程并发执行，而且还便于计算出为完成打印任务所花费的时间。
+4） 应用请求
+在上述三种情况中，都是由系统内核为它创建一个新进程，而这一类事件则是基于应用进程的需求，由它创建一个新的进程，以便使新进程以并发的运行方式完成特定任务。
+2.进程的创建过程
+一旦操作系统发现了要求创建新进程的事件后，便调用进程创建原语create()按下述步骤创建一个新进程。
+1） 申请空白PCB。为新进程申请获得唯一的数字标识符，并从PCB集合中索取一个空白PCB。
+2） 为新进程分配资源。为新进程的程序和数据以及用户栈分配必要的内存空间。显然，此时操作系统必须知道新进程所需要的内存大小。
+3） 初始化进程控制块。PCB的初始化包括：
+①初始化标识信息，将系统分配的标识符和父进程标识符，填入新的PCB中。
+②初始化处理机状态信息，使程序计数器指向程序的入口地址，使栈指针指向栈顶。
+③初始化处理机控制信息，将进程的状态设置为就绪状态或静止就绪状态，对于优先级，通常是将它设置为最低优先级，除非用户以显式的方式提出高优先级要求。
+4） 将新进程插入就绪队列，如果进程就绪队列能够接纳新进程，便将新进程插入到就绪队列中。
+进程终止
+1.引起进程终止的事件
+1）正常结束
+在任何计算机系统中，都应该有一个表示进程已经运行完成的指示。例如，在批处理系统中，通常在程序的最后安排一条Hold指令或终止的系统调用。当程序运行到Hold指令时，将产生一个中断，去通知OS本进程已经完成。
+2）异常结束
+在进程运行期间，由于出现某些错误和故障而迫使进程终止。这类异常事件很多，常见的有：越界错误，保护错，非法指令，特权指令错，运行超时，等待超时，算术运算错，I/O故障。
+3）外界干预
+外界干预并非指在本进程运行中出现了异常事件，而是指进程应外界的请求而终止运行。这些干预有：操作员或操作系统干预，父进程请求，父进程终止。
+2. 进程的终止过程
+如果系统发生了上述要求终止进程的某事件后，OS便调用进程终止原语，按下述过程去终止指定的进程。
+1）根据被终止进程的标识符，从PCB集合中检索出该进程的PCB，从中读出该进程状态。
+2）若被终止进程正处于执行状态，应立即终止该进程的执行，并置调度标志为真。用于指示该进程被终止后应重新进行调度。
+3）若该进程还有子孙进程，还应将其所有子孙进程予以终止，以防他们成为不可控的进程。
+4）将被终止的进程所拥有的全部资源，或者归还给其父进程，或者归还给系统。
+5）将被终止进程（它的PCB）从所在队列（或链表）中移出，等待其它程序来搜集信息。
+阻塞唤醒
+1.引起进程阻塞和唤醒的事件
+1）请求系统服务
+当正在执行的进程请求操作系统提供服务时，由于某种原因，操作系统并不立即满足该进程的要求时，该进程只能转变为阻塞状态来等待，一旦要求得到满足后，进程被唤醒。
+2）启动某种操作
+当进程启动某种操作后，如果该进程必须在该操作完成之后才能继续执行，则必须先使该进程阻塞，以等待该操作完成，该操作完成后，将该进程唤醒。
+3）新数据尚未到达
+对于相互合作的进程，如果其中一个进程需要先获得另一（合作）进程提供的数据才能运行以对数据进行处理，则是要其所需数据尚未到达，该进程只有（等待）阻塞，等到数据到达后，该进程被唤醒。
+4）无新工作可做
+系统往往设置一些具有某特定功能的系统进程，每当这种进程完成任务后，便把自己阻塞起来以等待新任务到来，新任务到达后，该进程被唤醒。
+2.进程阻塞过程
+正在执行的进程，当发现上述某事件后，由于无法继续执行，于是进程便通过调用阻塞原语block()把自己阻塞。可见，进程的阻塞是进程自身的一种主动行为。进入block过程后，由于此时该进程还处于执行状态，所以应先立即停止执行，把进程控制块中的现行状态由执行改为阻塞，并将PCB插入阻塞队列。如果系统中设置了因不同事件而阻塞的多个阻塞队列，则应将本进程插入到具有相同事件的阻塞（等待）队列。最后，转调度程序进行重新调度，将处理机分配给另一就绪进程，并进行切换，亦即，保留被阻塞进程的处理机状态（在PCB中），再按新进程的PCB中的处理机状态设置CPU环境。
+3. 进程唤醒过程
+当被阻塞的进程所期待的事件出现时，如I/O完成或者其所期待的数据已经到达，则由有关进程（比如，用完并释放了该I/O设备的进程）调用唤醒原语wakeup()，将等待该事件的进程唤醒。唤醒原语执行的过程是：首先把被阻塞的进程从等待该事件的阻塞队列中移出，将其PCB中的现行状态由阻塞改为就绪，然后再将该PCB插入到就绪队列中。
+
+### 调度算法
+进程的调度算法包括：
+实时系统中：FIFO(First Input First Output，先进先出算法)，SJF(Shortest Job First，最短作业优先算法)，SRTF(Shortest Remaining Time First，最短剩余时间优先算法）。
+交互式系统中：RR(Round Robin，时间片轮转算法)，HPF(Highest Priority First，最高优先级算法)，多级队列，最短进程优先，保证调度，彩票调度，公平分享调度。
+
+### 阶段
+进程是由进程控制块、程序段、数据段三部分组成。一个进程可以包含若干线程(Thread)，线程可以帮助应用程序同时做几件事(比如一个线程向磁盘写入文件，另一个则接收用户的按键操作并及时做出反应，互相不干扰)，在程序被运行后，系统首先要做的就是为该程序进程建立一个默认线程，然后程序可以根据需要自行添加或删除相关的线程。是可并发执行的程序。在一个数据集合上的运行过程，是系统进行资源分配和调度的一个独立单位，也是称活动、路径或任务，它有两方面性质：活动性、并发性。进程可以划分为运行、阻塞、就绪三种状态，并随一定条件而相互转化：就绪--运行，运行--阻塞，阻塞--就绪。
+进程为应用程序的运行实例，是应用程序的一次动态执行。看似高深，我们可以简单地理解为：它是操作系统当前运行的执行程序。在系统当前运行的执行程序里包括：系统管理计算机个体和完成各种操作所必需的程序；用户开启、执行的额外程序，当然也包括用户不知道，而自动运行的非法程序（它们就有可能是病毒程序）。
+
+## 常见进程名称
+A
+actmovie.exeactmovie.exe 是微软Windows操作系统自带的程序，用于支持显示卡运行一些屏幕保护和微软程序。
+agentsvr.exeagentsvr.exe 是一个ActiveX插件，用于多媒体程序。
+alg.exe alg.exe 是微软Windows操作系统自带的程序。它用于处理微软Windows网络连接共享和网络连接防火墙。这个程序对你系统的正常运行是非常重要的。
+ASPNET_WP.exeASPNET_WP.exe 是涉及技术的程序运行所必须的程序。
+AcctMgr.exeAcctMgr.exe 是Norton systemworks套装的一部分，用于你计算机上相关密码。该进程对计算机的稳定和安全是重要的。
+acrobat.exeacrobat.exe 是theAdobe Acrobat创建器的一部分。它能够创建和打印PDF文档。该进程不是运行所必须的，但终止它可能有问题。
+acrord32.exeacrord32.exe 是Adobe Acrobat Reader阅读器的一部分。该进程用于打开和察看PDF文档
+AcroTray.exe AcroTray.exe 是Acrobat助手程序，用于帮助你打印你的PDF文档。
+ACSd.exe ACSd.exe 是AOL的相关程序。该进程在后台运行和自动重新连接到AOL。
+ADGJDET.exe ADGJDET.exe 是Creative创新声卡的一部分。
+AdobeUpdateManager.exeAdobeUpdateManager.exe
+是Adobe产品软件升级程序。
+agent.exeagent.exe 是Dell电脑提供的用户监视和管理系统的程序。这不是一个重要的进程。禁用它可以节省用户资源。注意：agent.exe也可能是Forte Agent Newsgroup Reader新闻组阅读器。
+agrsmmsg.exeagrsmmsg.exe 是软猫调制解调器的消息程序。
+AgtServ.exeAgtServ.exe 是在线字典软件，提供屏幕点击查询词典功能。
+aim.exeaim.exe 是AOL Instant Messenger即时通讯软件。
+aim95.exeaim95.提供在线聊天服务。
+AIT 索尼Sony音乐机。提供35G的容量和4M的传输速度。AIT技术提供最多100G的空间，AIT-3提供最多800G的空间。
+alogserv.exealogserv.exe 是McAfee VirusScan杀毒软件的一部分。该进程记录McAfee VirusScan的应用程序操作日志。
+anvshell.exeanvshell.exe 是ASUS显示卡硬件驱动程序。它也会在系统托盘创建图标用于进行控制。
+AOLacsd.exeAOLacsd.exe 是AOL Internet软件的连接器，用于Internet连接。
+AOLDial.exeAOLDial.exe 是AOL Internet软件（9.0版本或更高版本）的一部分。用于拨号连接Internet网络。
+aom.exeaom.exe 是Adobe公司产品的进程，用于Web检测更新。
+apntex.exeapntex.exe 是Alps电子硬件驱动软件。
+asfagent.exeasfagent.exe 是Dell电脑系统管理套件的一部分。
+ashWebSv.exeashWebSv.exe 是Avast网络安全套件的一部分。用于保护你的电脑免受网络攻击。
+astart.exeastart.exe 是华硕ASUS显示卡硬件驱动程序。该程序会在系统托盘中添加图标，用于配置设备。
+ati2evxx.exeati2evxx.exe 是ATI显示卡增强工具。它用于管理ATI HotKey特性。
+ATIevxx.exeATIevxx.exe 是ATI一些显卡硬件产品的软件部分。
+ATIPtaxx.exe ATIPtaxx.exe 是ATI显示卡驱动的一部分，在系统托盘有显示。
+Ajkasd.exe Ajkasd.exe是一个新型的病毒程序，进入计算会盗取人得各种信息发送到指定的地址邮箱。
+Atrack.exe Atrack.exe 是NortonInternet Security网络安全和Norton Personal Firewall个人防火墙的一部分。它会提醒你一些软件尝试访问网络。
+aupdate.exeaupdate.exe是Symantec产品的LiveUpdate在线升级程序。该进程自动在线检测是否有Symantec产品的更新，提醒你进行下载。
+autochk.exeautochk.exe 是微软操作系统的一部分。它会备份和还原系统设定到初始状态。
+avconsol.exeavconsol.exe 是McAfee VirusScan反病毒软件的一部分。
+AVENGINE.EXEAVENGINE.EXE 是Panda Antivirus熊猫卫士反病毒套装的一部分，用于保护你的计算机免受网络攻击。
+avgserv.exeavgserv.exe 是AVG AntiVirus反病毒网络安全程序。用于实时保护你的计算机安全。
+avgw.exeavgw.exe 是Grisoft网络安全组件的一部分，用于保护你计算机的安全。免受病毒、间谍软件、蠕虫和木马的攻击。
+avpcc.exeavpcc.exe 是卡巴斯基Kaspersky反病毒套装的一部分，用于保护你的计算机免受病毒和蠕虫的攻击。
+avsynmgr.exeavsynmgr.exe 是McAfee网络安全套装的一部分。它用于更新同步病毒定义文件，保持你的计算机使用最新病毒特征库。
+B
+btwdins.exebtwdins.exe
+btwdins.exebtwdins.exe是为了微软Windows操作系统支持蓝牙技术的程序。
+backweb-137903.exe
+backweb-137903.exe是惠普HP相关软件。
+backweb-8876480backweb-8876480.exe是罗技Logitech相关产品软件。它用于自动检测升级罗技相关产品。
+bacstray.exe
+bacstray.exe 是宽度调制解调器Modem相关进程，用于配置和诊断。
+blackd.exe
+blackd.exe是BlackICE计算机防火墙的一部分。
+bpcpost.exe
+bpcpost.exe 是Microsoft TV察看器程序。
+BRMFRSMG.EXE
+BRMFRSMG.EXE 是Brother Print兄弟打印机相关程序，该进程使用户通过并口、USB口连接兄弟打印机相关设备。
+brss01a.exe
+brss01a.exe 是兄弟打印机相关程序。
+bttnserv.exe
+bttnserv.exe 用于支持Compaq EasyAccess多媒体键盘按钮，移除该进程，会导致附加按钮无法使用。
+C
+ccmexec.exe
+ccmexec.exe 是微软SMS操作系统服务。该SMS Agent Host服务在其它服务之上。这个程序对你系统的正常运行是非常重要的。
+cidaemon.exe
+cidaemon.exe 是一个索引服务，为了让你更加快速的查找文件。
+cisvc.exe
+cisvc.exe 是微软Windows操作系统自带的程序。它用于监测CIDAEMON.exe内存使用状态，防止可用内存过低问题。这是一个系统进程，不要进行删除。
+clisvcl.exe
+clisvcl.exe 是微软Windows系统自带程序。该进程调用SMSS进程检测在你计算机上的软件。
+cmd.exe
+cmd.exe 是微软Windows系统的命令行程序，类似与微软的DOS操作系统。cmd.exe是一个32位的命令行程序，运行在Windows NT/2000/XP上。
+Control.exe
+Control.exe 是微软Windows操作系统自带的程序。用于访问控制面板。
+csrss.exe
+csrss.exe 是微软客户端/服务端运行时子系统。该进程管理Windows图形相关任务。这个程序对你系统的正常运行是非常重要的。 注意：csrss.exe也有可能是W32.Netsky.AB@mm、W32.Webus Trojan、Win32.Ladex.a等病毒创建的。该病毒通过Email邮件进行传播，当你打开附件时，即被感染。该蠕虫会在受害者机器上建立SMTP服务，用以自身传播。该病毒允许攻击者访问你的计算机，窃取木马和个人数据。这个进程的安全等级是建议立即进行删除。
+conime.exe
+conime.exe是输入法编辑器相关程序。允许用户使用标准键盘就能输入复杂的字符与符号，需要注意它同时可能是一个bfghost1.0远程控制后门程序。此程序允许攻击者访问你的计算机，窃取密码和个人数据。建议立即删除此进程。
+ctfmon.exe
+ctfmon.exe是Microsoft Office产品套装的一部分。它可以选择用户文字输入程序，和微软Office XP语言条。
+ca.exe
+ca.exe是ETrust EZ Firewall防火墙的一部分，用于保护你的计算机免受网络攻击。
+calc.exe
+calc.exe 是微软附件中自带的计算器程序，包括基本和科学计算。
+carpserv.exe
+carpserv.exe 是调制解调器Modem相关软件，用于对调制解调器的声音进行控制，例如你听到的拨号时听到的声音。
+CCAP.EXE
+CCAP.EXE 是Symantec AntiVirus反病毒网络安全套装的一部分，用于保护你的计算机免受网络危险攻击。
+ccapp.exe
+ccapp.exe 是Norton AntiVirus2003反病毒软件的一部分。它能够自动保护你的计算机安全。
+ccevtmgr.exe
+ccevtmgr.（exe 是Norton Internet Security网络安全套装的一部分）。该进程会同反病毒与防火墙程序同时安装。
+ccproxy.exe
+ccproxy.exe 是Symantec Internet Security网络安全套装的一部分。该进程用于设定基本网络共享，用于你的网络共享给你的家庭或者办公室。
+ccpxysvc.exe
+ccpxysvc.exe 是Norton Antivirus反病毒和Norton Personal Firewall个人防火墙的服务程序。
+ccregvfy.exe
+ccregvfy.（）exe 是Norton Internet Security网络安全套装的一部分。该进程检测是否存在恶意的篡改注册表。
+cdac11ba.exe
+cdac11ba.exe 是MacroVision safeCast反复制保护软件。该进程是一些软件为了保护其产品不被盗版而安装的。
+cdantsrv.exe
+cdantsrv.exe 是MacroVison C-Dilla许可管理软件的一部分。
+cfd.execfd.exe
+cfd.execfd.exe 是Motive通讯的宽带相关软件。
+cfgwiz.exe
+cfgwiz.exe 是Norton Antivirus反病毒软件的一部分。
+cftmon.exe
+cftmon.exe 是微软Microsoft Office套件的一部分，用于输入法相关。
+charmap.exe
+charmap.exe 是微软Microsoft Windows工具，用于帮助你定位非标准字符集。
+cleanup.exe
+cleanup.exe 是网络清理程序的一部分。它用于删除网络浏览痕迹，包括cookies、历史记录以及其它。
+cli.execli.exe 是ATi显示卡硬件驱动程序。在状态栏上有图标用于进行调节。
+cmanager.exe
+cmanager.exe 是操作日志记录程序。
+cmmpu.exe
+cmmpu.exe 是C-Media声卡驱动程序。
+Companion.exe
+Companion.exe 是AOL连接套件的一部分，其图标驻留在系统托盘上。它提供访问AOL的快捷方式。
+comsmd.exe
+comsmd.exe 是3com 3C9xx系列网卡驱动的一部分。它提供诊断和配置功能。
+cpd.exe
+cpd.exe是McAfee Personal Firewall个人防火墙的一部分。它在后台运行，用于不同的安全特性。
+crypserv.exe
+crypserv.exe 是Kenonic控制加密软件的主程序。
+cthelper.exe
+cthelper.exe 是创新Creative公司Soundblaster声卡的程序。它是一个第三方的声卡相关插件/软件。
+ctnotify.exe
+ctnotify.exe 是创新Creative声卡产品的一部分。该进程用于侦测插入的CD光盘。
+ctsvccda.exe
+ctsvccda.exe 是创新Creative公司的相关软件，它与Soundblaster声卡驱动和一些其它创新程序一同安装。
+cvpnd.exe
+cvpnd.exe 是Cisco VPN虚拟专用网络相关软件的一部分，它用于你使用加密或非密码VPN连接到远程服务器。
+D
+ddhelp.exe
+ddhelp.exe 是微软Windows操作系统的一部分。该进程是DirectX的一部分，用于对Windows 3D显示卡加速。
+dfssvc.exe
+dfssvc.exe 是分布式文件系统服务。只在微软服务器版Windows上出现，该进程是重要的DFS分布式文件系统服务。微软Windows服务器版基础服务。
+dllhost.exe
+dllhost.exe 是微软Windows操作系统的一部分。dllhost.exe用于管理DLL应用。这个程序对你系统的正常运行是非常重要的。
+dos4gw.exe
+dos4gw.exe 是微软DOS操作系统在32位操作系统上的扩展壳。
+dotnetfx.exe
+dotnetfx.exe 是微软Windows升级到.net技术的一个进程。
+dumprep.exe
+dumprep.exe 是微软Windows XP操作系统的一部分，记录出现错误的程序信息。当一个程序出现错误时，该程序发送相关错误信息到微软。该程序不是纯粹的系统进程，安装是为了第三方使用。
+dadapp.exe
+dadapp.exe 是Dell电脑自带的相关软件。用于Dell键盘可编程键。它会在系统托盘增加图标。
+dadtray.exe
+dadtray.exe 是Dell电脑相关软件，用于配置Dell电脑相关热键。如果移除该进程会导致附加键不可用。
+damon.exe
+damon.exe 是Dell电脑技术支持软件套装的一部分。
+dap.exe
+dap.exe 是SpeedBit's DownLoad Accelator下载加速器主程序。
+DavCData.exe
+DavCData.exe 是微软Microsoft Internet Information网络信息服务的一部分，用于让你的个人计算机或者Windows服务器对外提供Web服务。
+dcfssvc.exe
+dcfssvc.exe 是柯达Kodak数码相机相关程序。该进程用于用户传输照片。
+ddcman.exe
+ddcman.exe 是Wild Tangent计算机游戏相关程序。
+defwatch.exe
+defwatch.exe 是Norton Antivirus反病毒企业版的一部分，用于检查病毒库特征文件是否有新的升级。
+delayrun.exe
+delayrun.exe 是惠普HP相关产品，它用于防止HP计算机相关问题。
+devenv.exe
+devenv.exe 是微软Microsoft Visual Studio的一部分，用于应用程序开发。
+devldr.exe
+devldr.exe 是与Sound BlasterLive!声卡安装的程序。
+Dwm.exe
+Dwm.exe是aero界面的一个进程，是VistaAeroGlass相关程序，让Vista系统拥有玻璃化3D的界面风格。
+E
+explorer.exe
+explorer.exe 是Windows程序管理器或者Windows资源管理器，它用于管理Windows图形壳，包括开始菜单、任务栏、桌面和文件管理。删除该程序会导致Windows图形界面无法适用。注意：explorer.exe也有可能是w32.Codered和w32.mydoom.b@mm病毒。该病毒通过email邮件传播，当你打开病毒发送的附件时，即被感染。该病毒会在受害者机器上建立SMTP服务。该病毒允许攻击者访问你的计算机、窃取密码和个人数据。该进程的安全等级是建议删除。 EnergyCut-EnergyCut.exe 2007--2-9
+联想笔记本电源管理程序。电源管理系统是联想专为笔记本电脑设计的一套用于管理笔记本电源的系统。它通过软件、硬件的配合，提供了对笔记本电脑各部件的性能及功耗控制，从而延长了笔记本电脑的电池使用时间，增强了其续航能力。
+F
+fast.exe
+fast.exe 是Windows XP的一部分。该进程用于用户账号的快速切换。该进程不是纯粹的系统进程，但是安装它是需要的。
+G
+grpconv.exe
+grpconv.exe 是Windows操作系统的工具。它用于转换Windows 3.1的文件夹格式升级至Windows 95以及更高版本的Windows。这个程序对你系统的正常运行是非常重要的。
+grovel.exe
+grovel.exe扫描零备份存储(SIS)卷上的重复文件，并且将重复文件指向一个数据存储点，以节省磁盘空间。(系统服务)
+H
+hidserv.exe
+hidserv.exe 用于支持Windows操作系统的USB多媒体设备。这个程序对你系统的正常运行是非常重要的。
+I
+iexplore.exe
+iexplore.exe 是MicrosoftInternet Explorer的主程序。这个微软Windows应用程序让你在网上冲浪，和访问本地Interanet网络。iexplore.exe同时也是Avant网络浏览器的一部分，这是一个免费的基于Internet Explorer的浏览器。注意iexplore.exe也有可能是Trojan.KillAV.B病毒，该病毒会终止你的反病毒软件，和一些Windows系统工具，该进程的安全等级是建议删除。
+imapi.exe
+imapi.exe 是微软Windows操作系统的一部分。用于CD刻录镜像管理。这个程序对你系统的正常运行是非常重要的。
+inetinfo.exe
+inetinfo.exe 主要用于支持微软Windows IIS网络服务的除错。这个程序对你系统的正常运行是非常重要的。
+internat.exe
+internat.exe是微软Windows多语言输入程序。这个程序对你系统的正常运行是非常重要的。internatt.exe也有可能是Win32.Lydra.a木马的一部分。该木马允许攻击者访问你的计算机，窃取密码和个人数据。该进程的安全等级是建议删除。
+K
+kernel32.exe
+kernel32.exe 是Floodnet病毒的一部分，通过Outlook发送邮件进行传播。这个进程的安全等级是建议立即进行删除。
+L
+launch32.exe
+launch32.exe 是储存管理服务的远程部署与安装程序。这个程序对你系统的正常运行是非常重要的。
+loadwc.exe
+loadwc.exe 是微软Internet Explorer浏览器的一部分。该程序用于更高Internet Explorer的设置和喜好。
+Locator.exe
+Locator.exe 的作用是为了稳定的让远程程序调用Windows系统本地服务。该进程维护一个数据库程序。这个程序对你系统的正常运行是非常重要的。
+logonui.exe
+logonui.exe 是一个系统进程，用于显示微软Windows XP系统用户切换界面。这个程序对你系统的正常运行是非常重要的。
+lsass.exe
+lsass.exe 是一个系统进程，用于微软Windows系统的安全机制。它用于本地安全和登陆策略。注意：lsass.exe也有可能是Windang.worm、irc.ratsou.b、Webus.B、MyDoom.L、Nimos.worm创建的，病毒通过软盘、群发邮件和P2P文件共享进行传播。
+M
+mad.exe
+mad.exe 是MicrosoftExchange重要的一部分，用于调用DLL和记录消息。这个程序对你系统的正常运行是非常重要的。
+mapisp32.exe
+mapisp32.exe 用于调用Microsoft Exchange和Outlook以及其它调用MAPI消息的程序。禁用该程序，可能导致相关需求的程序出现问题。
+msdtc.exe
+msdtc.exe 是微软分布式传输协调程序。该进程调用系统Microsoft Personal Web Server和Microsoft SQL Server。该服务用于管理多个服务器。
+msiexec.exe
+msiexec.exe 是Windows Installer的一部分。用于安装Windows Installer安装包（MSI）。这个程序对你系统的正常运行是非常重要的。
+msoobe.exe
+msoobe.exe 是Windows XP产品激活程序，用于管理在线注册许可密钥。这个程序对你系统的正常运行是非常重要的。
+mstask.exe
+mstask.exe 是Windows计划任务程序。它用于管理计划任务，包括备份和更新，定时运行。如果你删除该进程，计划任务将无法运行。
+mprexe.exe
+mprexe.exe 只会在微软Windows 9x和Me出现。该进程用于计算机使用多个网络协议和网卡与路由的连接。正常情况下，该进程似乎只会在Windows出现问题的情况下，才会出现的Windows的任务管理器中。在其它情况下，它是不被调用的。
+msconfig.exe
+msconfig.exe 用于帮助编辑和管理配置文件，例如Win.ini和autoexec.bat。这个程序对你系统的正常运行是非常重要的。
+msgsrv32.exe
+msgsrv32.exe 仅会在微软Windows 9x和Me系统出现。该进程是一个32位的消息服务，似乎只在出现问题的时候，才会在Windows任务管理器中出现。在其它时候是不可见的。
+MSMMsg.exe
+MSMMsg.exe 是BCM语音调制解调器驱动程序。
+mstinit.exe
+mstinit.exe 是微软计划任务精灵，用于管理杀毒软件和磁盘碎片整理。
+mmc.exe
+mmc.exe 是Windows管理控制程序，是显示管理插件的控制面板，例如驱动器管理。
+mmtask.tsk
+mmtask.tsk 只会在微软Windows 9x和Me系统出现，通常情况下是隐藏的。它用于Windows进行多媒体的多任务处理。这个程序对你系统的正常运行是非常重要的。
+System Idle
+System Idle 不是一个进程，更多用于统计剩余的CPU资源情况。无法删除。
+N
+ndisuio.sys
+ndisuio.sys 属于NDIS User Mode I/O (NDISUIO)协议驱动，用于支持无线设备，例如蓝牙之类。这个程序对你系统的正常运行是非常重要的。
+netdde.exe
+netdde.exe 是微软Windows的网络动态数据Exchange服务。它用于帮助exchange数据在网络传输。
+ntoskrnl.exe
+ntoskrnl.exe 是保护性的进程，在你计算机反复启动的情况下出现。在正常情况下，在任务管理器是不会有该进程的。注意：ntoskrnl.exe也可能是w32.bolzano病毒。请使用杀毒软件进行查杀。
+ntvdm.exe
+ntvdm.exe 是Windows 16位虚拟机的一部分。该进程用于使16位的进程能够运行在32位的系统环境下。这个程序对你系统的正常运行是非常重要的。
+0
+1xconfig.exe
+1xconfig.exe 是SCM MicroSystems多媒体硬件产品的软件。该进程提供方便的托盘操作方式。
+3dm2.exe
+3dm2.exe 是3ware ATA/SATA RAID硬盘Web界面控制工具。该进程不是运行所必须的，但终止它可能有问题。
+而系统进程一般在15到25之间为最正常,进程里面都是.exe格式的.注意看下格式,除了.exe的就有可能是病毒
+P
+pchschd.exe
+pchschd.exe 用于监视分析系统硬件使用。
+pstores.exe
+pstores.exe 属于储存保护服务。它用于应用程序储存，如Internet Explorer储存机密数据。
+R
+rasautou.exe
+rasautou.exe 是微软远程访问拨号器程序。它用于系统或者第三方应用程序，管理调制解调器Modem拨号连接。
+rdpclip.exe
+rdpclip.exe 用于文件复制。它用于从服务器到本地拷贝粘贴文件。这个程序对你系统的正常运行是非常重要的。
+regsvc.exe
+regsvc.exe是Windows服务集中的一个系统服务。它用于远程计算机访问本地注册表。一些本地程序也能够通过该服务编辑注册表。这个程序对你系统的正常运行是非常重要的。
+regsvr32.exe
+regsvr32.exe 用于注册Windows操作系统的动态链接库和ActiveX控件。这个程序对你系统的正常运行是非常重要的。
+rnaapp.exe
+rnaapp.exe 是微软Windows 98/Me操作系统的进程，用于进行拨号网络连接。
+rpcss.exerpcss.exe 是微软Windows操作系统的一部分。它用于本地计算机的远程程序调用服务。它是本地网络的公用服务。这个程序对你系统的正常运行是非常重要的。
+rsvp.exe
+rsvp.exe 是用于保证客户端与服务端的音频和视频流质量的服务。
+rundll.exe
+rundll.exe是Windows 95/98/Me是系统的一部分。这个程序对你系统的正常运行是非常重要的。注意：rundll.exe也可能是LOXOSCAM和Backdoor.SchoolBus.B木马的一部分。该病毒会在Windows XP和2000中出现。该病毒允许攻击者访问你的计算机。该进程的安全等级是建议立即删除。
+rundll32.exe
+rundll32.exe 用于在内存中运行DLL文件，它们会在应用程序中被使用。这个程序对你系统的正常运行是非常重要的。注意：rundll32.exe也可能是W32.Miroot.Worm病毒。该病毒允许攻击者访问你的计算机，窃取密码和个人数据。该进程的安全等级是建议立即删除。
+runonce.exe
+runonce.exe 是微软Run Once的包装。它用于第三方应用程序的安装程序。它允许安装程序添加到启动项中，用于再次启动后，进行进一步配置。这个程序对你系统的正常运行是非常重要的。
+RegCertTool.exe
+RegCertTool.exe中国农业银行的证书工具相关程序。
+S
+sapisvr.exe
+sapisvr.exe 是Windows XP自带的进程。它用于语音识别支持。
+savedump.exe
+savedump.exe 用于NT内存储存。该进程会写内存内容到页面文件。重新启动后，内存中的内存会保存成一个文件。这个程序对你系统的正常运行是非常重要的。
+scanregw.exe
+scanregw.exe 是微软Windows操作系统的一部分。该进程用于检测Windows注册表。如果找到错误，会使用Windows上次可用的较好配置文件启动Windows。这个程序对你系统的正常运行是非常重要的。
+scardsvr.exe
+scardsvr.exe 是微软Windows操作系统的一部分，用于认证你本地系统的简单安全卡。
+services.exe
+services.exe 是微软Windows操作系统的一部分。用于管理启动和停止服务。该进程也会处理在计算机启动和关机时运行的服务。这个程序对你系统的正常运行是非常重要的。注意：services也可能是W32.Randex.R(储存在%systemroot%\system32\目录)和Sober.P (储存在%systemroot%\Connection Wizard\Status\目录)木马。
+smss.exe
+smss.exe 是微软Windows操作系统的一部分。该进程调用对话管理子系统和负责操作你系统的对话。这个程序对你系统的正常运行是非常重要的。注意：smss.exe也可能是Win32.Ladex.a木马。
+snmp.exe
+snmp.exe 是微软Windows自带的网络相关进程。该进程用于局域网LAN和局域网基础配置。这个程序对你系统的正常运行是非常重要的。
+spoolss.exe
+spoolss.exe 是微软Windows操作系统的一部分。该进程用于将打印机任务发送到本地打印机。这个程序对你系统的正常运行是非常重要的。
+spoolsv.exe
+spoolsv.exe 用于将Windows打印机任务发送给本地打印机。注意spoolsv.exe也有可能是Backdoor.Ciadoor.B木马。该木马允许攻击者访问你的计算机，窃取密码和个人数据。该进程的安全级别是建议立即删除。
+srvany.exe
+srvany.exe 是一个Windows附加程序，用于将一个程序注册为一个服务。
+svchost.exe
+svchost.exe 是一个属于微软Windows操作系统的系统程序，用于执行DLL文件。这个程序对你系统的正常运行是非常重要的。注意：svchost.exe也有可能是W32.Welchia.Worm病毒，它利用WindowsLSASS漏洞，制造缓冲区溢出，导致你计算机关机。该进程的安全等级是建议立即删除。
+systray.exe
+systray.exe 是一个后台程序，用于显示信息，例如日期和时间。这个程序对你系统的正常运行是非常重要的。
+T
+tapisrv.exe这是一个后台服务，用于Windows 98和Windows NT4的Windows电话(TAPI)支持。这个程序对你系统的正常运行是非常重要的。
+taskmgr.exe
+taskmgr.exe 用于Windows任务管理器。它显示你系统中正在运行的进程。该程序使用Ctrl+Alt+Del打开这不是纯粹的系统程序，但是如果终止它，可能会导致不可知的问题。
+tlntsvr.exe
+tlntsvr.exe 属于微软Telnet程序的一部分。Telnet是一个基于TCP/IP网络的终端程序。
+tcpsvcs.exe
+tcpsvcs.exe 是微软Windows网络组件的一部分。这个系统进程用于计算机使用专用的TCP/IP网络服务，例如DHCP，简单TCP和打印服务。这个程序对你系统的正常运行是非常重要的。
+U
+Userinit.exe
+Userinit.exe 是Windows操作系统一个关键进程。用于管理不同的启动顺序，例如在建立网络链接和Windows壳的启动。
+W
+WinLogon.exe
+WinLogon.exe 是Windows NT登陆管理器。它用于处理你系统的登陆和登陆过程。该进程在你系统的作用是非常重要的。注意：winlogon.exe也可能是W32.Netsky.D@mm蠕虫病毒。该病毒通过Email邮件传播，当你打开病毒发送的附件时，即会被感染。该病毒会创建SMTP引擎在受害者的计算机上，群发邮件进行传播。该病毒允许攻击者访问你的计算机，窃取密码和个人数据。该进程的安全等级是建议删除。　[TOP↑]
+WMIADAP.EXE
+WMIADAP.EXE 是微软操作系统的部分。该进程AutoDiscovery/AutoPurge ( ADAP)进程传输性能库到WMI库。这个程序对你系统的正常运行是非常重要的。
+Wmiexe.exe
+Wmiexe.exe 是Windows管理程序。该后台程序让用户访问基本系统信息。删除这个重要进程会导致你的系统出现错误。
+wmiprvse.exe
+wmiprvse.exe 是微软Windows操作系统的一部分。用于通过WinMgmt.exe程序处理WMI操作。这个程序对你系统的正常运行是非常重要的。
+wscntfy.exe
+wscntfy.exe 是Windows安全相关策略的一部分。这个程序对你系统的正常运行是非常重要的。
+wuaclt.exe
+wuaclt.exe 是微软Windows系统自动检测你计算机上软件更新功能的一部分。这个程序对你系统的正常运行是非常重要的。注意：wuaclt.exe也可能是W32.Cult木马，该木马允许攻击者访问你的计算机，窃取密码和个人数据。该进程的安全等级是建议立即删除。
+WUAUBoot.exe
+WUAUBoot.exe 用于管理Windows自动更新。该进程会检测检测更新。
+Wuauclt.exe
+Wuauclt.exe 是Windows自动升级管理程序。该进程会不断在线检测更新。删除该进程将使你无法得到最新更新信息。
+wuaudt.exe
+wuaudt.exe 是微软操作系统自动更新的一部分。这个程序对你系统的正常运行是非常重要的。 （windows不存在名为wuaudt.exe的文件，正常的应该是wuauclt.exe而非wuaudt.exe，如果你的系统存在wuaudt.exe，很有可能你已经是病毒或木马的受害者）
+WUCrtUpd.exe
+WUCrtUpd.exe 用于检测Windows的更新。该进程定时自动链接到在线地址检测更新。删除该进程将使你无法得到最新更新信息。
+注：Windows 8及其以上版本系统内“进程”则以应用程序名称呈现。
+
+## 病毒进程
+当确认windows系统中存在病毒，但是通过“任务管理器”又找不出异样的进程，这说明病毒采用了一些隐藏措施，总结出来有三种隐藏方法：
+以假乱真
+通常病毒的进程名称采用这样的命名方式：将系统中正常进程名中的o改为0，l改为i，i改为j。比如系统中的正常进程有：svchost.exe、explorer.exe、iexplore.exe、winlogon.exe等，而有些病毒会这样命名：svch0st.exe、explore.exe、iexplorer.exe、winlogin.exe。微乎其微的进程名称差异让用户很难发现异常。
+偷梁换柱
+利用“任务管理器”无法查看进程对应可执行文件这一缺陷。比如svchost.exe进程对应的可执行文件位于“C:\WINDOWS\system32”目录下（Windows2000则是C:\WINNT\system32目录），如果病毒将自身复制到“C:\WINDOWS\”中，并改名为svchost.exe，运行后，我们在“任务管理器”中看到的也是svchost.exe，和正常的系统进程无异。此时，仅仅从进程名称上是无法判断正常进程还是异常进程的。
+借尸还魂
+采用进程插入技术，将病毒运行所需的dll文件插入正常的系统进程中，表面上看无任何可疑情况，实质上系统进程已经被病毒控制了，除非借助专业的进程检测工具，否则要想发现隐藏在其中的病毒是很困难的。
+相关内容(操作系统学习)：fork()，线程，管程，进程间通信。
