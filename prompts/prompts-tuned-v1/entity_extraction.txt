@@ -1,0 +1,123 @@
+
+-Goal-
+Given a text document that is potentially relevant to this activity and a list of entity types, identify all entities of those types from the text and all relationships among the identified entities.
+
+-Steps-
+1. Identify all entities. For each identified entity, extract the following information:
+- entity_name: Name of the entity, capitalized
+- entity_type: One of the following types: [computer science, software engineering, machine learning, artificial intelligence, neural networks, convolutional neural network, recurrent neural network, deep learning, transfer learning, natural language processing, speech recognition, computer vision, agile development methodologies, test-driven development, pair programming, continuous integration and delivery, DevOps practices, microservices architecture]
+- entity_description: Comprehensive description of the entity's attributes and activities
+Format each entity as ("entity"{tuple_delimiter}<entity_name>{tuple_delimiter}<entity_type>{tuple_delimiter}<entity_description>)
+
+2. From the entities identified in step 1, identify all pairs of (source_entity, target_entity) that are *clearly related* to each other.
+For each pair of related entities, extract the following information:
+- source_entity: name of the source entity, as identified in step 1
+- target_entity: name of the target entity, as identified in step 1
+- relationship_description: explanation as to why you think the source entity and the target entity are related to each other
+- relationship_strength: an integer score between 1 to 10, indicating strength of the relationship between the source entity and target entity
+Format each relationship as ("relationship"{tuple_delimiter}<source_entity>{tuple_delimiter}<target_entity>{tuple_delimiter}<relationship_description>{tuple_delimiter}<relationship_strength>)
+
+3. Return output in 该文本是中文，主要讨论计算机科学和人工智能领域的相关概念和技术。以下是对该文本的分析：
+
+1. 语言：该文本使用的是中文。
+2. 主题：该文本主要讨论计算机科学和人工智能领域的相关概念和技术，包括但不限于人工神经网络、深度学习、数据挖掘、自然语言处理、分布式系统、并行性、云计算等。
+3. 结构：该文本采用了段落化的结构，每个段落主要讨论一个特定的概念或技术，并提供相关的背景信息和应用场景。
+4. 内容：该文本介绍了人工神经网络、深度学习、数据挖掘、自然语言处理等计算机科学领域的概念，并提供了相关的背景信息和应用场景。同时，还介绍了分布式系统、并行性、云计算等计算机技术的概念，并讨论了它们在现代计算机科学中的重要性和应用场景。
+5. 语言风格：该文本采用了较为简洁明了的语言风格，使用了相当多的专业术语来描述概念和技术，同时也提供了相关的背景信息和应用场景以帮助读者更好地理解。
+6. 目标：该文本的目标是为读者提供计算机科学和人工智能领域的相关概念和技术的介绍，并帮助读者更好地理解这些概念和技术以及它们在现代计算机科学中的重要性和应用场景。
+7. 适用范围：该文本适用于对计算机科学和人工智能领域感兴趣的读者，包括但不限于计算机专业学生、研究员、工程师等。
+8. 参考资料：该文本没有提供明确的参考资料，可以通过相关的关键词进行查找以获取更多信息。 as a single list of all the entities and relationships identified in steps 1 and 2. Use **{record_delimiter}** as the list delimiter.
+
+4. If you have to translate into 该文本是中文，主要讨论计算机科学和人工智能领域的相关概念和技术。以下是对该文本的分析：
+
+1. 语言：该文本使用的是中文。
+2. 主题：该文本主要讨论计算机科学和人工智能领域的相关概念和技术，包括但不限于人工神经网络、深度学习、数据挖掘、自然语言处理、分布式系统、并行性、云计算等。
+3. 结构：该文本采用了段落化的结构，每个段落主要讨论一个特定的概念或技术，并提供相关的背景信息和应用场景。
+4. 内容：该文本介绍了人工神经网络、深度学习、数据挖掘、自然语言处理等计算机科学领域的概念，并提供了相关的背景信息和应用场景。同时，还介绍了分布式系统、并行性、云计算等计算机技术的概念，并讨论了它们在现代计算机科学中的重要性和应用场景。
+5. 语言风格：该文本采用了较为简洁明了的语言风格，使用了相当多的专业术语来描述概念和技术，同时也提供了相关的背景信息和应用场景以帮助读者更好地理解。
+6. 目标：该文本的目标是为读者提供计算机科学和人工智能领域的相关概念和技术的介绍，并帮助读者更好地理解这些概念和技术以及它们在现代计算机科学中的重要性和应用场景。
+7. 适用范围：该文本适用于对计算机科学和人工智能领域感兴趣的读者，包括但不限于计算机专业学生、研究员、工程师等。
+8. 参考资料：该文本没有提供明确的参考资料，可以通过相关的关键词进行查找以获取更多信息。, just translate the descriptions, nothing else!
+
+5. When finished, output {completion_delimiter}.
+
+-Examples-
+######################
+
+Example 1:
+
+entity_types: [computer science, software engineering, machine learning, artificial intelligence, neural networks, convolutional neural network, recurrent neural network, deep learning, transfer learning, natural language processing, speech recognition, computer vision, agile development methodologies, test-driven development, pair programming, continuous integration and delivery, DevOps practices, microservices architecture]
+text:
+要求，你就拿不到钱。
+测试：目的是让你知道，什么时候算是完成了。如果你聪明，你就应该先写测试，这样可以及时知道你是否真地完成了。否则，你经常会不知道，到底有哪些功能是真正完成了，离预期目标还差多远。
+
+### 权利和义务
+定义每个用户需求的商业优先级；
+制订总体计划，包括用多少投资、经过多长时间、达到什么目的；
+在项目开发过程中的每个工作周，都能让投资获得最大的收益；
+通过重复运行你所指定的功能测试，准确地
+------------------------
+output:
+ ("entity"{tuple_delimiter}REQUIREMENTS ANALYSIS{tuple_delimiter}SOFTWARE ENGINEERING{tuple_delimiter}The process of understanding and documenting the needs, constraints, and functional and non-functional requirements for a software system)
+{record_delimiter}
+("entity"{tuple_delimiter}BUSINESS PRIORITIES{tuple_delimiter}COMPUTER SCIENCE{tuple_delimiter}The importance of each user requirement in terms of business value and impact on the project)
+{record_delimiter}
+("entity"{tuple_delimiter}PROJECT PLANNING{tuple_delimiter}SOFTWARE ENGINEERING{tuple_delimiter}The process of defining the overall strategy, timeline, budget, and goals for a software development project)
+{record_delimiter}
+("entity"{tuple_delimiter}INVESTMENT{tuple_delimiter}COMPUTER SCIENCE{tuple_delimiter}The financial resources allocated to a software development project)
+{record_delimiter}
+("entity"{tuple_delimiter}TIMELINE{tuple_delimiter}SOFTWARE ENGINEERING{tuple_delimiter}The schedule for completing the various phases of a software development project)
+{record_delimiter}
+("entity"{tuple_delimiter}PROJECT GOALS{tuple_delimiter}COMPUTER SCIENCE{tuple_delimiter}The objectives that the software development project aims to achieve)
+{record_delimiter}
+("entity"{tuple_delimiter}FUNCTIONAL TESTING{tuple_delimiter}SOFTWARE ENGINEERING{tuple_delimiter}The process of testing the functionality of a software system to ensure it meets the specified requirements and performs as expected)
+{record_delimiter}
+("relationship"{tuple_delimiter}REQUIREMENTS ANALYSIS{tuple_delimiter}BUSINESS PRIORITIES{tuple_delimiter}Understanding business priorities is essential for defining software requirements that align with the project's goals and objectives{tuple_delimiter}10)
+{record_delimiter}
+("relationship"{tuple_delimiter}PROJECT PLANNING{tuple_delimiter}BUSINESS PRIORITIES{tuple_delimiter}Defining business priorities helps in creating a project plan that maximizes the return on investment for stakeholders{tuple_delimiter}9)
+{record_delimiter}
+("relationship"{tuple_delimiter}PROJECT PLANNING{tuple_delimiter}INVESTMENT{tuple_delimiter}The investment required for a software development project is determined by the overall project plan{tuple_delimiter}8)
+{record_delimiter}
+("relationship"{tuple_delimiter}PROJECT PLANNING{tuple_delimiter}TIMELINE{tuple_delimiter}The timeline for completing a software development project is defined in the project plan{tuple_delimiter}9)
+{record_delimiter}
+("relationship"{tuple_delimiter}PROJECT GOALS{tuple_delimiter}BUSINESS PRIORITIES{tuple_delimiter}The business priorities help define the goals for a software development project that are aligned with stakeholder needs and expectations{tuple_delimiter}10)
+{record_delimiter}
+("relationship"{tuple_delimiter}FUNCTIONAL TESTING{tuple_delimiter}PROJECT GOALS{tuple_delimiter}Functional testing ensures that the software system meets the specified goals and requirements{tuple_delimiter}9)
+{completion_delimiter}
+#############################
+
+
+Example 2:
+
+entity_types: [computer science, software engineering, machine learning, artificial intelligence, neural networks, convolutional neural network, recurrent neural network, deep learning, transfer learning, natural language processing, speech recognition, computer vision, agile development methodologies, test-driven development, pair programming, continuous integration and delivery, DevOps practices, microservices architecture]
+text:
+，玻姆提出应把承认不断改进软件工程实践的必要性作为软件工程的第七条原理。根据这条原理，不仅要积极采纳新的软件开发技术，还要注意不断总结经验，收集进度和消耗等数据，进行出错类型和问题报告统计。这些数据既可以用来评估新的软件技术的效果，也可以用来指明必须着重注意的问题和应该优先进行研究的工具和技术。
+
+## 结构
+软件体系结构是具有一定形式的结构化元素，即构件的集合，包括处理构件、数据构
+------------------------
+output:
+ ("entity"{tuple_delimiter}SOFTWARE ENGINEERING{tuple_delimiter}software engineering{tuple_delimiter}The practice of designing, developing, maintaining, and modifying software})
+{record_delimiter}
+("entity"{tuple_delimiter}PRINCIPLE{tuple_delimiter}concept{tuple_delimiter}A principle is a fundamental truth or proposition that serves as the foundation for a system or theory})
+{record_delimiter}
+("entity"{tuple_delimiter}SEVENTH PRINCIPLE{tuple_delimiter}principle{tuple_delimiter}The seventh principle of software engineering emphasizes the importance of continuously improving software engineering practices by adopting new technologies and analyzing data to identify areas for improvement})
+{record_delimiter}
+("entity"{tuple_delimiter}NEW TECHNOLOGY{tuple_delimiter}technology{tuple_delimiter}New technology refers to innovative tools, techniques, or methodologies used in software development})
+{record_delimiter}
+("entity"{tuple_delimiter}DATA ANALYSIS{tuple_delimiter}process{tuple_delimiter}Data analysis is the process of examining data to identify patterns, trends, and insights})
+{record_delimiter}
+("entity"{tuple_delimiter}ERROR TYPE AND PROBLEM REPORT STATISTICS{tuple_delimiter}data{tuple_delimiter}Error type and problem report statistics are used to evaluate the effectiveness of new software technologies and identify areas for improvement})
+{record_delimiter}
+("entity"{tuple_delimiter}SOFTWARE ARCHITECTURE{tuple_delimiter}structure{tuple_delimiter}Software architecture refers to the structured elements, or components, that make up a software system, including processing components and data structures})
+{completion_delimiter}
+#############################
+
+
+
+-Real Data-
+######################
+entity_types: [computer science, software engineering, machine learning, artificial intelligence, neural networks, convolutional neural network, recurrent neural network, deep learning, transfer learning, natural language processing, speech recognition, computer vision, agile development methodologies, test-driven development, pair programming, continuous integration and delivery, DevOps practices, microservices architecture]
+text: {input_text}
+######################
+output:

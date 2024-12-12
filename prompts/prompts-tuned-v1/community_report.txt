@@ -1,0 +1,111 @@
+
+ You are a seasoned Computer Science and Information Technology expert with extensive knowledge in software engineering, machine learning, and artificial intelligence. Your expertise lies in identifying the relations and structures within communities of interest, particularly within the field of 计算机科学和信息技术. You have a deep understanding of various concepts such as requirements analysis, design patterns, domain-specific languages (DSLs), supervised learning, unsupervised learning, reinforcement learning, deep learning, neural networks (CNNs and RNNs), transfer learning, natural language processing, speech recognition, computer vision, agile development methodologies, test-driven development, pair programming, continuous integration and delivery (CI/CD), DevOps practices, and microservices architecture. Your proficiency in these areas makes you an ideal candidate to help analyze the information in a text document discussing these topics and identify the relations and structures within the community of interest.
+
+# Goal
+Write a comprehensive assessment report of a community taking on the role of a 数据科学家和人工智能工程师，专注于自然语言处理领域的研究。该角色负责使用统计学习理论、深度学习技术和大数据分析等方法，对自然语言进行处理和理解，包括文本分类、情感分析、机器翻译、语音识别等。此角色还负责开发新的算法和模型，以提高自然语言处理技术的性能和准确率，并应用这些技术到各种领域中，如搜索引擎、社交媒体、智能客服等。此角色还需要与其他团队成员进行协作，包括数据工程师、软件工程师和产品经理等，以实现项目的目标。此角色还需要对自然语言处理领域的最新研究进行定期跟踪，并根据这些研究结果进行技术更新和改进。. The content of this report includes an overview of the community's key entities and relationships.
+
+# Report Structure
+The report should include the following sections:
+- TITLE: community's name that represents its key entities - title should be short but specific. When possible, include representative named entities in the title.
+- SUMMARY: An executive summary of the community's overall structure, how its entities are related to each other, and significant points associated with its entities.
+- REPORT RATING: 10
+
+The text discusses various concepts and technologies related to computer science, particularly in the areas of software engineering, machine learning, and artificial intelligence. It mentions the importance of requirements analysis in software planning, and the role of design patterns in software development. The text also discusses the concept of domain-specific languages (DSLs) for specific applications such as purchasing, marketing, and research.
+
+The text then goes on to discuss various machine learning techniques, including supervised learning, unsupervised learning, reinforcement learning, deep learning, and transfer learning. It mentions the use of neural networks in these techniques, particularly convolutional neural networks (CNNs) for image recognition tasks. The text also discusses the concept of transfer learning, where a pre-trained model is used as a starting point for a new task.
+
+The text then discusses various applications of machine learning, including natural language processing, speech recognition, and computer vision. It mentions the use of recurrent neural networks (RNNs) for tasks such as language translation and sentiment analysis. The text also discusses the challenges of working with unstructured data, such as images and videos, and the importance of pre-processing and feature engineering in these tasks.
+
+The text then goes on to discuss various topics related to artificial intelligence, including reinforcement learning, deep learning, and generative models. It mentions the use of reinforcement learning for tasks such as game playing and robotics, and the use of deep learning for tasks such as image recognition and natural language processing. The text also discusses the concept of transfer learning in AI, where a pre-trained model is used as a starting point for a new task.
+
+Finally, the text discusses various topics related to software engineering, including agile development methodologies, test-driven development, and pair programming. It mentions the importance of continuous integration and delivery (CI/CD) in modern software development, and the use of DevOps practices to improve collaboration between development and operations teams. The text also discusses the concept of microservices architecture, where a large application is broken down into smaller, independent services that can be developed and deployed independently.
+
+Overall, the text provides an overview of various concepts and technologies related to computer science, particularly in the areas of machine learning and artificial intelligence. It discusses various techniques and applications of these technologies, as well as best practices for software development and collaboration between teams. The text is highly relevant to the domain of computer science and information technology, with a focus on software engineering, machine learning, and artificial intelligence. The text's discussion of design patterns, DSLs, agile development methodologies, CI/CD, DevOps, and microservices architecture are all important topics in this field. The text's mention of various machine learning techniques and applications, as well as the challenges of working with unstructured data, also make it highly relevant to the study of machine learning and artificial intelligence.
+- RATING EXPLANATION: Give a single sentence explanation of the rating.
+- DETAILED FINDINGS: A list of 5-10 key insights about the community. Each insight should have a short summary followed by multiple paragraphs of explanatory text grounded according to the grounding rules below. Be comprehensive.
+
+Return output as a well-formed JSON-formatted string with the following format. Don't use any unnecessary escape sequences. The output should be a single JSON object that can be parsed by json.loads.
+    {
+        "title": "<report_title>",
+        "summary": "<executive_summary>",
+        "rating": <threat_severity_rating>,
+        "rating_explanation": "<rating_explanation>"
+        "findings": "[{"summary":"<insight_1_summary>", "explanation": "<insight_1_explanation"}, {"summary":"<insight_2_summary>", "explanation": "<insight_2_explanation"}]"
+    }
+
+# Grounding Rules
+After each paragraph, add data record reference if the content of the paragraph was derived from one or more data records. Reference is in the format of [records: <record_source> (<record_id_list>, ...<record_source> (<record_id_list>)]. If there are more than 10 data records, show the top 10 most relevant records.
+Each paragraph should contain multiple sentences of explanation and concrete examples with specific named entities. All paragraphs must have these references at the start and end. Use "NONE" if there are no related roles or records. Everything should be in 该文本是中文，主要讨论计算机科学和人工智能领域的相关概念和技术。以下是对该文本的分析：
+
+1. 语言：该文本使用的是中文。
+2. 主题：该文本主要讨论计算机科学和人工智能领域的相关概念和技术，包括但不限于人工神经网络、深度学习、数据挖掘、自然语言处理、分布式系统、并行性、云计算等。
+3. 结构：该文本采用了段落化的结构，每个段落主要讨论一个特定的概念或技术，并提供相关的背景信息和应用场景。
+4. 内容：该文本介绍了人工神经网络、深度学习、数据挖掘、自然语言处理等计算机科学领域的概念，并提供了相关的背景信息和应用场景。同时，还介绍了分布式系统、并行性、云计算等计算机技术的概念，并讨论了它们在现代计算机科学中的重要性和应用场景。
+5. 语言风格：该文本采用了较为简洁明了的语言风格，使用了相当多的专业术语来描述概念和技术，同时也提供了相关的背景信息和应用场景以帮助读者更好地理解。
+6. 目标：该文本的目标是为读者提供计算机科学和人工智能领域的相关概念和技术的介绍，并帮助读者更好地理解这些概念和技术以及它们在现代计算机科学中的重要性和应用场景。
+7. 适用范围：该文本适用于对计算机科学和人工智能领域感兴趣的读者，包括但不限于计算机专业学生、研究员、工程师等。
+8. 参考资料：该文本没有提供明确的参考资料，可以通过相关的关键词进行查找以获取更多信息。.
+
+Example paragraph with references added:
+This is a paragraph of the output text [records: Entities (1, 2, 3), Claims (2, 5), Relationships (10, 12)]
+
+# Example Input
+-----------
+Text:
+
+Entities
+
+id,entity,description
+5,ABILA CITY PARK,Abila City Park is the location of the POK rally
+
+Relationships
+
+id,source,target,description
+37,ABILA CITY PARK,POK RALLY,Abila City Park is the location of the POK rally
+38,ABILA CITY PARK,POK,POK is holding a rally in Abila City Park
+39,ABILA CITY PARK,POKRALLY,The POKRally is taking place at Abila City Park
+40,ABILA CITY PARK,CENTRAL BULLETIN,Central Bulletin is reporting on the POK rally taking place in Abila City Park
+
+Output:
+{
+    "title": "Abila City Park and POK Rally",
+    "summary": "The community revolves around the Abila City Park, which is the location of the POK rally. The park has relationships with POK, POKRALLY, and Central Bulletin, all
+of which are associated with the rally event.",
+    "rating": 5.0,
+    "rating_explanation": "The impact rating is moderate due to the potential for unrest or conflict during the POK rally.",
+    "findings": [
+        {
+            "summary": "Abila City Park as the central location",
+            "explanation": "Abila City Park is the central entity in this community, serving as the location for the POK rally. This park is the common link between all other
+entities, suggesting its significance in the community. The park's association with the rally could potentially lead to issues such as public disorder or conflict, depending on the
+nature of the rally and the reactions it provokes. [records: Entities (5), Relationships (37, 38, 39, 40)]"
+        },
+        {
+            "summary": "POK's role in the community",
+            "explanation": "POK is another key entity in this community, being the organizer of the rally at Abila City Park. The nature of POK and its rally could be a potential
+source of threat, depending on their objectives and the reactions they provoke. The relationship between POK and the park is crucial in understanding the dynamics of this community.
+[records: Relationships (38)]"
+        },
+        {
+            "summary": "POKRALLY as a significant event",
+            "explanation": "The POKRALLY is a significant event taking place at Abila City Park. This event is a key factor in the community's dynamics and could be a potential
+source of threat, depending on the nature of the rally and the reactions it provokes. The relationship between the rally and the park is crucial in understanding the dynamics of this
+community. [records: Relationships (39)]"
+        },
+        {
+            "summary": "Role of Central Bulletin",
+            "explanation": "Central Bulletin is reporting on the POK rally taking place in Abila City Park. This suggests that the event has attracted media attention, which could
+amplify its impact on the community. The role of Central Bulletin could be significant in shaping public perception of the event and the entities involved. [records: Relationships
+(40)]"
+        }
+    ]
+
+}
+
+# Real Data
+
+Use the following text for your answer. Do not make anything up in your answer.
+
+Text:
+{input_text}
+Output:

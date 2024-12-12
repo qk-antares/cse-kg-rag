@@ -9,7 +9,7 @@ encoding_model: cl100k_base # this needs to be matched to your model!
 llm:
   api_key: ${GRAPHRAG_API_KEY} # set this in the generated .env file
   type: openai_chat # or azure_openai_chat
-  model: mistral:10k
+  model: mistral:20k
   model_supports_json: true # recommended if this is available for your model.
   # audience: "https://cognitiveservices.azure.com/.default"
   request_timeout: 3600.0
@@ -51,8 +51,8 @@ input:
   file_pattern: ".*\\.txt$"
 
 chunks:
-  size: 6400
-  overlap: 400
+  size: 5000
+  overlap: 500
   group_by_columns: [id]
 
 ### Storage settings ###
